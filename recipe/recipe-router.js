@@ -6,7 +6,7 @@ const router = express.Router();
 
 router.get('/', async (req, res) => {
  try {
-  const recipe = await RecipeDb.find();
+  const recipe = await RecipeDb.getRecipes();
   res.status(200).json(recipe);
  } catch (err) {
   res.status(500).json({ message: 'Failed to get recipes' });
@@ -32,6 +32,23 @@ router.post('/', async (req, res) => {
   res.status(200).json(recipe);
  } catch (err) {
   res.status(500).json({ message: 'Failed to add recipe' });
+ }
+});
+
+router.get('/:id/instructions', async (req, res) => {
+ try {
+  const instruction = await RecipeDb.getInstructions(req.params.id);
+  if (instruction) {
+   if (instruction.length > 0) {
+    res.status(200).json(instruction);
+   } else {
+    res.status(200).json({ message: 'There is no any instructions yet' });
+   }
+  } else {
+   res.status(404).json({ message: 'This id not found' });
+  }
+ } catch (err) {
+  res.status(500).json({ message: 'Failed to get instructions', err });
  }
 });
 
