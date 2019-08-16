@@ -52,4 +52,13 @@ router.get('/:id/instructions', async (req, res) => {
  }
 });
 
+router.get('/:id/shopping_list', async (req, res) => {
+ try {
+  const list = await RecipeDb.getShoppingList(req.params.id);
+  res.status(200).json(list);
+ } catch (err) {
+  res.status(500).json({ message: 'Failed to get shopping list' });
+ }
+});
+
 module.exports = router;
